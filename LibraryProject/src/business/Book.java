@@ -109,6 +109,16 @@ final public class Book implements Serializable {
 		}
 		return null;
 	}
+
+	public List<BookCopy> getAvailableCopy(){
+		List<BookCopy> bookCopies = new ArrayList<BookCopy>();
+		for(BookCopy bookCopy : copies){
+			if(bookCopy.isAvailable()){
+				bookCopies.add(bookCopy);
+			}
+		}
+		return bookCopies;
+	}
 	public int getMaxCheckoutLength() {
 		return maxCheckoutLength;
 	}

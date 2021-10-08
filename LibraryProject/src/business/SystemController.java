@@ -75,6 +75,7 @@ public class SystemController implements ControllerInterface {
 		DataAccess da = new DataAccessFacade();
 
 		 Book book = da.searchBook(isbn);
+		 System.out.println("I got the book"+ book);
 		 if(book == null) return false;
 		 book.addCopy();
 		 da.saveBook(book);

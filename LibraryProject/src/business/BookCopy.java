@@ -34,6 +34,10 @@ final public class BookCopy implements Serializable {
 	public Book getBook() {
 		return book;
 	}
+
+	public void setVisibilityToFalse(){
+		this.isAvailable = false;
+	}
 	
 	public void changeAvailability() {
 		isAvailable = !isAvailable;

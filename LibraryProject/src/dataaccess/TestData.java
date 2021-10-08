@@ -23,13 +23,15 @@ public class TestData {
 	
 	
 	public static void main(String[] args) {
-		TestData td = new TestData();
-		td.bookData();
-		td.libraryMemberData();
-		td.userData();
+//		TestData td = new TestData();
+//		td.bookData();
+//		td.libraryMemberData();
+//		td.userData();
 		DataAccess da = new DataAccessFacade();
-		System.out.println(da.readBooksMap());
-		System.out.println(da.readUserMap());
+		System.out.println(da.readBooksMap().get("48-56882").getAvailableCopy().size());
+//		System.out.println(da.readMemberMap().get("1004").getCheckoutRecord().checkoutEntriesList.get(0).getCheckoutDate());
+//		System.out.println(da.readMemberMap().get("1004").getCheckoutRecord().checkoutEntriesList.get(0).getBookCopy());
+//		System.out.println(da.readMemberMap().get("1004").getCheckoutRecord().checkoutEntriesList.get(0).getDueDate());
 	}
 	///create books
 	public void bookData() {
@@ -103,6 +105,7 @@ public class TestData {
 	List<User> allUsers = new ArrayList<User>() {
 		{
 			add(new User("101", "xyz", Auth.LIBRARIAN));
+			add(new User("104", "def", Auth.LIBRARIAN));
 			add(new User("102", "abc", Auth.ADMIN));
 			add(new User("103", "111", Auth.BOTH));
 		}
