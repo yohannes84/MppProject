@@ -1,5 +1,6 @@
 package business;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,6 @@ public class SystemController implements ControllerInterface {
 			throw new LoginException("Password incorrect");
 		}
 		currentAuth = map.get(id).getAuthorization();
-		
 	}
 	@Override
 	public List<String> allMemberIds() {
@@ -40,6 +40,46 @@ public class SystemController implements ControllerInterface {
 		retval.addAll(da.readBooksMap().keySet());
 		return retval;
 	}
-	
-	
+
+	public boolean addLibraryMember(String memberId, String fname, String lname, String tel,String street, String city, String state, String zip) {
+		DataAccess da = new DataAccessFacade();
+		Address address = new Address(street,city,state,zip);
+		da.saveNewMember(new LibraryMember(memberId , fname , lname , tel , address ));
+
+		return true;
+	}
+
+	public boolean checkoutBook(String memberId , String isbn) {
+		DataAccess da = new DataAccessFacade();
+		LibraryMember member = da.searchMember(memberId);
+		Book book = da.searchBook(isbn);
+		if(book == null || !book.isAvailable()){
+			return false;
+		}
+		if(member == null ){
+			return false;
+		}
+		BookCopy bookCopy = book.getNextAvailableCopy();
+		int checkoutLength = book.getMaxCheckoutLength();
+		member.checkout(bookCopy , LocalDate.now() , LocalDate.now().plusDays(checkoutLength));
+		da.saveMember(member);
+		da.saveBook(book);
+		da.readMemberMap();
+		da.readBooksMap();
+
+
+		return true;
+	}
+
+	public boolean addCopyOfExistingBook(String isbn) {
+		DataAccess da = new DataAccessFacade();
+
+		 Book book = da.searchBook(isbn);
+		 if(book == null) return false;
+		 book.addCopy();
+		 da.saveBook(book);
+		return true;
+	}
+
+
 }

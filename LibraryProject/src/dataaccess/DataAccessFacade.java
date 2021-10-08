@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
+import java.nio.file.Paths;
+
 
 import business.Book;
 import business.BookCopy;
@@ -22,7 +24,7 @@ public class DataAccessFacade implements DataAccess {
 	}
 	
 	public static final String OUTPUT_DIR = System.getProperty("user.dir") 
-			+ "\\src\\dataaccess\\storage";
+			+ "/src/dataaccess/storage";
 	public static final String DATE_PATTERN = "MM/dd/yyyy";
 	
 	//implement: other save operations
@@ -30,9 +32,47 @@ public class DataAccessFacade implements DataAccess {
 		HashMap<String, LibraryMember> mems = readMemberMap();
 		String memberId = member.getMemberId();
 		mems.put(memberId, member);
-		saveToStorage(StorageType.MEMBERS, mems);	
+		saveToStorage(StorageType.MEMBERS, mems);
 	}
-	
+
+
+
+
+	@Override
+	public LibraryMember searchMember(String memberId) {
+		HashMap<String, LibraryMember> mems = readMemberMap();
+			if(mems.containsKey(memberId)){
+				return mems.get(memberId);
+			}
+
+			return null;
+	}
+
+	@Override
+	public Book searchBook(String isbn){
+		HashMap<String, Book> books = readBooksMap();
+
+		if(books.containsKey(isbn)){
+			return books.get(isbn);
+		}
+		return null;
+	}
+
+	public  void saveMember(LibraryMember member){
+		HashMap<String, LibraryMember> mems = readMemberMap();
+		mems.put(member.getMemberId() , member);
+		saveToStorage(StorageType.MEMBERS, mems);
+	}
+
+	public void saveBook(Book book){
+		HashMap<String, Book> books = readBooksMap();
+		books.put(book.getIsbn() , book);
+		saveToStorage(StorageType.BOOKS, books);
+	}
+
+
+
+
 	@SuppressWarnings("unchecked")
 	public  HashMap<String,Book> readBooksMap() {
 		//Returns a Map with name/value pairs being
@@ -77,13 +117,17 @@ public class DataAccessFacade implements DataAccess {
 		memberList.forEach(member -> members.put(member.getMemberId(), member));
 		saveToStorage(StorageType.MEMBERS, members);
 	}
-	
+
+
+
+
 	static void saveToStorage(StorageType type, Object ob) {
 		ObjectOutputStream out = null;
 		try {
 			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
 			out = new ObjectOutputStream(Files.newOutputStream(path));
 			out.writeObject(ob);
+			System.out.println("Booommmm");
 		} catch(IOException e) {
 			e.printStackTrace();
 		} finally {
