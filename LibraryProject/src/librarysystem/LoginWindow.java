@@ -16,9 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JOptionPane;
 
-import business.ControllerInterface;
-
-import business.SystemController;
+import business.*;
 
 
 public class LoginWindow extends JFrame implements LibWindow {
@@ -186,8 +184,25 @@ public class LoginWindow extends JFrame implements LibWindow {
     	
     	private void addLoginButtonListener(JButton butn) {
     		butn.addActionListener(evt -> {
-    			JOptionPane.showMessageDialog(this,"Successful Login");
-    				
+    			SystemController systemController = new SystemController();
+				try {
+					systemController.login(username.getText() , password.getText());
+				} catch (LoginException e) {
+					e.printStackTrace();
+				}
+				if(systemController.currentAuth != null){
+					System.out.println("*****"+SystemController.currentAuth);
+//					systemController.addLibraryMember("2222","87654","9876","1234","2345","234","234","2345");
+//					systemController.checkoutBook("1004","48-56882");
+				systemController.addCopyOfExistingBook("48-56882");
+					JOptionPane.showMessageDialog(this,"Successful Login");
+
+				}
+				else{
+					System.out.println("*****"+SystemController.currentAuth);
+
+					JOptionPane.showMessageDialog(this,"Error");
+				}
     		});
     	}
 	
