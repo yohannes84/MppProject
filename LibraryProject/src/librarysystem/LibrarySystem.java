@@ -24,8 +24,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
 	public final static LibrarySystem INSTANCE =new LibrarySystem();
 	JPanel mainPanel;
 	JMenuBar menuBar;
-    JMenu options;
-    JMenuItem login, allBookIds, allMemberIds; 
+    JMenu options,operations;
+    JMenuItem login, allBookIds, allMemberIds,addNewMember,checkoutBook,addNewCopy; 
     String pathToImage;
     private boolean isInitialized = false;
     
@@ -82,16 +82,29 @@ public class LibrarySystem extends JFrame implements LibWindow {
     
     private void addMenuItems() {
        options = new JMenu("Options");  
+       operations =  new JMenu("Operations");
  	   menuBar.add(options);
+ 	   menuBar.add(operations);
  	   login = new JMenuItem("Login");
  	   login.addActionListener(new LoginListener());
  	   allBookIds = new JMenuItem("All Book Ids");
  	   allBookIds.addActionListener(new AllBookIdsListener());
  	   allMemberIds = new JMenuItem("All Member Ids");
  	   allMemberIds.addActionListener(new AllMemberIdsListener());
+ 	   addNewMember = new JMenuItem("Add New Member");
+ 	   //addNewMember.addActionListener(new AddNewMemberListener());
+ 	   checkoutBook = new JMenuItem("Checkout Book");
+ 	   //checkoutBook.addActionListener(new CheckoutListener());
+ 	   addNewCopy = new JMenuItem("Add New Copy");
+ 	  // addNewCopy.addActionListener(new AddNewCopyListener());
+ 	   
+ 	   
  	   options.add(login);
  	   options.add(allBookIds);
  	   options.add(allMemberIds);
+ 	   operations.add(addNewMember);
+ 	   operations.add(checkoutBook);
+ 	   operations.add(addNewCopy);
     }
     
     class LoginListener implements ActionListener {
@@ -160,6 +173,19 @@ public class LibrarySystem extends JFrame implements LibWindow {
 		}
     	
     }
+    
+    /// ActionListner interface is not implmented ...
+    
+//    class AddNewMemberListener implements ActionListener {
+//	}
+//	
+//	class CheckoutListener implements ActionListener {
+//	}
+//
+//	class AddNewCopyListener implements ActionListener {
+//	}
+    
+    
 
 	@Override
 	public boolean isInitialized() {
